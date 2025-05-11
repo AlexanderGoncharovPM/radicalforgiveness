@@ -48,8 +48,28 @@
       line-height: 1.4;
     }
   </style>
+<style>
+  #music-btn {
+    background-color: #f3e5f5;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+#music-controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+</style>
 </head>
 <body>
+<audio id="bgm" loop autoplay>
+  <source src="videoplayback.weba" type="audio/webm">
+  Ваш браузер не підтримує відтворення аудіо.
+</audio>
+<div id="music-controls">
+  <button id="music-btn" onclick="document.getElementById('bgm').play()">🎵 Увімкнути музику</button>
+  <button onclick="document.getElementById('bgm').pause()">🔇 Вимкнути музику</button>
+</div>
   <h1>Анкета Радикального Прощення</h1>
   <div class="progress"><div class="progress-bar" id="progressBar" style="width: 0%"></div></div>
   <form id="forgivenessForm">
