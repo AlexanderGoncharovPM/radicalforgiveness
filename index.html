@@ -58,21 +58,7 @@
     border-radius: 8px;
     margin-bottom: 1.5rem;
   }
-#music-controls {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-#music-controls button {
-  font-size: 1.1rem;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-  margin-top: 1rem;
-}
-#music-controls button:hover {
-  background: linear-gradient(135deg, #fbeaff, #ffe0e0);
-  transform: scale(1.05);
-}
+#music-controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
 </style>
 </head>
 <body>
@@ -88,8 +74,8 @@
   <div class="progress"><div class="progress-bar" id="progressBar" style="width: 0%"></div></div>
   <form id="forgivenessForm">
     <div id="questionContainer"></div>
-    <button type="button" id="prevBtn" style="background: linear-gradient(135deg, #c3aed6, #f5c7b8); border: none; padding: 0.8rem 1.5rem; font-size: 1.1rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.3s ease; color: #2d0642; font-weight: bold;">Назад</button>
-    <button type="button" id="nextBtn" style="background: linear-gradient(135deg, #c3aed6, #f5c7b8); border: none; padding: 0.8rem 1.5rem; font-size: 1.1rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.3s ease; color: #2d0642; font-weight: bold;">Далі</button>
+    <button type="button" id="prevBtn" onclick="changeStep(-1)">Назад</button>
+    <button type="button" id="nextBtn" onclick="changeStep(1)">Далі</button>
     <button type="submit" class="hidden" id="submitBtn">Надіслати</button>
   </form>
   <div id="result" class="hidden">
@@ -97,7 +83,8 @@
     <p>Ваші відповіді надіслано.</p>
   </div>
 
-  <script src="https://yourusername.github.io/your-repo/questions_from_latest_table.js"></script>
+  <script src="questions.js"></script>
+<script src="questions_final.js"></script>
 <script>
 let step = 0;
 const answers = {};
