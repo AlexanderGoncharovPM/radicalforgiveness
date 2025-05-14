@@ -47,7 +47,27 @@
       font-size: 0.95rem;
       line-height: 1.4;
     }
-  </style>
+  .nav-btn {
+  background: linear-gradient(135deg, #c3aed6, #f5c7b8);
+  border: none;
+  padding: 1.2rem 2.25rem;
+  font-size: 1.65rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  color: #2d0642;
+  font-weight: bold;
+  margin: 1rem 0.5rem;
+  min-width: 180px;
+}
+@media (max-width: 600px) {
+  .nav-btn {
+    width: 100%;
+    font-size: 1.8rem;
+    padding: 1.2rem 2rem;
+  }
+}
+</style>
 <style>
   #music-btn {
     background-color: #f3e5f5;
@@ -58,8 +78,56 @@
     border-radius: 8px;
     margin-bottom: 1.5rem;
   }
-#music-controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+#music-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+#music-controls button {
+  font-size: 1.1rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+#music-controls button:hover {
+  background: linear-gradient(135deg, #fbeaff, #ffe0e0);
+  transform: scale(1.05);
+}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let y = 20;
+  doc.setFontSize(14);
+  doc.text("Результати проходження анкети", 10, y);
+  y += 10;
+  if (answers.name) {
+    doc.setFontSize(12);
+    doc.text("Ім’я: " + answers.name, 10, y);
+    y += 10;
+  }
+  const dateStr = new Date().toLocaleDateString("uk-UA");
+  doc.text("Дата проходження: " + dateStr, 10, y);
+  y += 10;
+  doc.setFontSize(11);
+  questions.forEach((q, i) => {
+    const a = answers[q.id];
+    if (a && y < 270) {
+      doc.text(`${i + 1}. ${q.text.replace(/<[^>]*>/g, '').slice(0, 80)}`, 10, y);
+      y += 6;
+      const response = Array.isArray(a) ? a.join(", ") : a;
+      const lines = doc.splitTextToSize(response, 180);
+      lines.forEach(line => {
+        doc.text(line, 12, y);
+        y += 6;
+        if (y > 270) doc.addPage(), y = 20;
+      });
+      y += 4;
+    }
+  });
+  doc.save("анкета.pdf");
+}
+</script>
 </head>
 <body>
 <audio id="bgm" loop autoplay>
@@ -74,17 +142,17 @@
   <div class="progress"><div class="progress-bar" id="progressBar" style="width: 0%"></div></div>
   <form id="forgivenessForm">
     <div id="questionContainer"></div>
-    <button type="button" id="prevBtn" onclick="changeStep(-1)">Назад</button>
-    <button type="button" id="nextBtn" onclick="changeStep(1)">Далі</button>
+    <button type="button" id="prevBtn" class="nav-btn" onclick="changeStep(-1)">Назад</button>
+    <button type="button" id="nextBtn" class="nav-btn" onclick="changeStep(1)">Далі</button>
     <button type="submit" class="hidden" id="submitBtn">Надіслати</button>
   </form>
   <div id="result" class="hidden">
+  <button onclick="downloadPDF()" style="margin: 1rem 0; padding: 0.6rem 1.2rem; font-size: 1rem; border-radius: 8px; background: #673ab7; color: white; border: none;">⬇️ Завантажити PDF</button>
     <h2>Дякуємо за проходження!</h2>
     <p>Ваші відповіді надіслано.</p>
   </div>
 
   <script src="questions.js"></script>
-<script src="questions_final.js"></script>
 <script>
 let step = 0;
 const answers = {};
